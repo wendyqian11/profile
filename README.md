@@ -3,7 +3,7 @@
 My personal website and blog, published for free with
 [GitHub Pages](https://pages.github.com/).
 
-**Live site:** https://wendyqian11.github.io/xiaoyuqian.github.io/
+**Live site:** https://xiaoyuqian.net/xiaoyuqian.github.io/
 
 ## How it works
 
