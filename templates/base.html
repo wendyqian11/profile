@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{page_title}}</title>
+  <meta name="description" content="{{description}}">
+  <link rel="stylesheet" href="{{base}}assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-title" href="{{base}}index.html">{{site_title}}</a>
+    <nav class="site-nav">
+      {{nav}}
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">🌙</button>
+    </nav>
+  </header>
+
+  <main class="content">
+{{content}}
+  </main>
+
+  <footer class="site-footer">
+    <p>© {{year}} {{author}} · Built with a Java static-site generator.</p>
+  </footer>
+
+  <script src="{{base}}assets/js/main.js"></script>
+</body>
+</html>

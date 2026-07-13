@@ -1,0 +1,146 @@
+/* ---------------------------------------------------------------------------
+   Styles for the site. Colors are defined as variables so we can offer a
+   light and a dark theme (toggled by the button in the header via main.js).
+   --------------------------------------------------------------------------- */
+
+:root {
+  --bg: #ffffff;
+  --fg: #1f2328;
+  --muted: #656d76;
+  --accent: #0969da;
+  --border: #d0d7de;
+  --card: #f6f8fa;
+  --code-bg: #f0f2f4;
+  --max-width: 720px;
+}
+
+[data-theme="dark"] {
+  --bg: #0d1117;
+  --fg: #e6edf3;
+  --muted: #9198a1;
+  --accent: #4493f8;
+  --border: #30363d;
+  --card: #161b22;
+  --code-bg: #1b2129;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- Header / nav ---- */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 0.75rem;
+}
+.site-title { font-size: 1.25rem; font-weight: 700; color: var(--fg); }
+.site-nav { display: flex; align-items: center; gap: 1rem; }
+.site-nav a { color: var(--muted); font-weight: 500; }
+.site-nav a.active { color: var(--fg); }
+
+.theme-toggle {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: inherit;
+  border-radius: 999px;
+  width: 2.1rem;
+  height: 2.1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ---- Main content ---- */
+.content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+}
+
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+
+hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+code {
+  background: var(--code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+pre {
+  background: var(--code-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+}
+pre code { background: none; padding: 0; }
+
+blockquote {
+  margin: 1rem 0;
+  padding: 0.25rem 1rem;
+  border-left: 4px solid var(--border);
+  color: var(--muted);
+}
+
+/* ---- Projects ---- */
+.card-list { list-style: none; padding: 0; display: grid; gap: 0.75rem; }
+.card {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+}
+
+/* ---- Blog list ---- */
+.search {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  margin: 0.75rem 0 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 1rem;
+}
+.post-list { list-style: none; padding: 0; }
+.post-item { padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
+.post-link { font-size: 1.1rem; font-weight: 600; }
+.post-date { display: block; color: var(--muted); font-size: 0.85rem; margin: 0.15rem 0; }
+.post-excerpt { margin: 0.35rem 0 0; color: var(--muted); }
+.no-results { color: var(--muted); font-style: italic; }
+
+/* ---- Individual post ---- */
+.post h1 { margin-bottom: 0.25rem; }
+.post .post-date { margin-bottom: 1.5rem; }
+.back { margin-top: 2.5rem; }
+
+/* ---- Footer ---- */
+.site-footer {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+}

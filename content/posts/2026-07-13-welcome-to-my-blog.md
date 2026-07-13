@@ -1,18 +1,17 @@
 ---
-layout: post
-title: "Welcome to my blog!"
-date: 2026-07-13 10:00:00 +0000
-categories: general
+title: Welcome to my blog!
+date: 2026-07-13
 ---
 
 This is my very first post 🎉
 
-I built this website with [GitHub Pages](https://pages.github.com/), which lets
-me publish a site for free just by writing simple text files.
+I built this website with plain **HTML**, **CSS**, and **JavaScript**, generated
+by a small **Java** program that turns these text files into web pages.
 
 ## How to write a new post
 
-Every post lives in the `_posts` folder and its filename follows this pattern:
+Every post lives in the `content/posts` folder and its filename follows this
+pattern:
 
 ```
 YEAR-MONTH-DAY-title-of-post.md
@@ -26,9 +25,9 @@ your post, written in **Markdown** — an easy way to format text.
 
 ## Markdown basics
 
-- `# Heading`, `## Smaller heading`
+- `# Heading` and `## Smaller heading`
 - `**bold**` and `*italic*`
 - `[link text](https://example.com)`
 - Bullet lists start with `-`
 
-That's it — happy writing!
+After editing, run `./build.sh` to regenerate the site — happy writing!

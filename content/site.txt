@@ -1,0 +1,8 @@
+# Site-wide settings — edit the values to the right of each "=".
+# Lines starting with "#" are comments and are ignored.
+
+title = Wendy Qian
+author = Wendy Qian
+tagline = Personal site & blog
+description = The personal website and blog of Wendy Qian.
+github = xiaoyuqian

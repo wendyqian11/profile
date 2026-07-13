@@ -1,8 +1,6 @@
 ---
-layout: post
-title: "An example second post"
-date: 2026-07-13 12:00:00 +0000
-categories: general
+title: An example second post
+date: 2026-07-13
 ---
 
 Here's a second example post so you can see how multiple posts appear on your
@@ -15,8 +13,8 @@ as a playground for trying out Markdown.
 
 Add a code snippet like so:
 
-```python
-print("Hello from my new website!")
+```
+System.out.println("Hello from my new website!");
 ```
 
 Delete or edit these example posts anytime — they won't hurt anything.

@@ -1,0 +1,7 @@
+# One project per line, using this format:
+#   Title | https://link | short description
+# Lines starting with "#" are ignored. Add, edit, or remove freely.
+
+Project One | https://github.com/xiaoyuqian | a one-line description of what it does and why it's interesting.
+Project Two | https://github.com/xiaoyuqian | another project, with a short, punchy summary.
+Project Three | https://github.com/xiaoyuqian | you get the idea.

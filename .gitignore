@@ -1,9 +1,3 @@
-# Jekyll build output and caches — not needed on GitHub.
-_site/
-.sass-cache/
-.jekyll-cache/
-.jekyll-metadata
-vendor/
-
-# Ruby dependency lock (fine to ignore for GitHub Pages).
-Gemfile.lock
+# Java build artifacts (the compiled generator).
+generator/out/
+*.class

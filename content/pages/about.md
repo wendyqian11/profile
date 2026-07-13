@@ -1,10 +1,4 @@
----
-layout: page
-title: About
-permalink: /about/
----
-
-## About me
+# About me
 
 Write a few paragraphs about yourself here — who you are, what you do, and what
 you're interested in. This page is a great place to go into more detail than the
@@ -16,6 +10,3 @@ Some things you might include:
 - Skills or technologies you enjoy working with
 - Hobbies and interests outside of work
 - How people can reach you
-
-<!-- Tip: to add a photo, put an image file in an `assets` folder and use:
-     ![Wendy](/assets/photo.jpg) -->
