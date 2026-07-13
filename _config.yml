@@ -10,11 +10,11 @@ description: >-                      # <- Used by search engines & social previe
 author: "Wendy Qian"                 # <- Your name (used on blog posts)
 email: ""                           # <- Optional: your email (leave "" to hide)
 
-# This repo is served as a PROJECT site under your custom domain xiaoyuqian.net:
-#   https://xiaoyuqian.net/xiaoyuqian.github.io/
+# This repo ('profile') is served as a PROJECT site at:
+#   https://wendyqian11.github.io/profile/   (also https://xiaoyuqian.net/profile/)
 # 'url' is your domain; 'baseurl' is the sub-path (the repo name).
-url: "https://xiaoyuqian.net"
-baseurl: "/xiaoyuqian.github.io"
+url: "https://wendyqian11.github.io"
+baseurl: "/profile"
 
 # Optional social links — fill in a username to show the icon, or leave blank.
 github_username: "xiaoyuqian"
