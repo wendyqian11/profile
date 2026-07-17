@@ -69,6 +69,12 @@ public class SiteGenerator {
         writePage("about.html", "", template, site, "About · " + siteTitle, about,
                 year, author, "about.html");
 
+        // ---- Investment page ----
+        String investMd = readFile(Paths.get(CONTENT, "pages", "investment.md"));
+        String invest = "<article class=\"page\">\n" + mdToHtml(investMd) + "</article>\n";
+        writePage("investment.html", "", template, site, "Investment · " + siteTitle, invest,
+                year, author, "investment.html");
+
         // ---- Individual posts ----
         Files.createDirectories(Paths.get("posts"));
         for (Post p : posts) {
@@ -197,7 +203,8 @@ public class SiteGenerator {
     }
 
     private static String nav(String base, String active) {
-        String[][] items = {{"Home", "index.html"}, {"About", "about.html"}};
+        String[][] items = {{"Home", "index.html"}, {"About", "about.html"},
+                {"Investment", "investment.html"}};
         StringBuilder sb = new StringBuilder();
         for (String[] it : items) {
             String cls = it[1].equals(active) ? " class=\"active\"" : "";

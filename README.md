@@ -17,6 +17,7 @@ content/            <- the only folder you normally edit
   projects.txt      <- your projects (one per line: Title | link | description)
   pages/home.md     <- the intro shown on the home page
   pages/about.md    <- the About page
+  pages/investment.md <- the Investment page (Stock, Crypto, Gold and Silver)
   posts/*.md        <- blog posts (filename: YYYY-MM-DD-title.md)
 
 templates/base.html <- the HTML shell every page is poured into
@@ -24,7 +25,7 @@ assets/css/style.css<- styling (includes a light/dark theme)
 assets/js/main.js   <- dark-mode toggle + live blog search
 generator/SiteGenerator.java <- the Java generator (Jekyll's replacement)
 
-index.html, about.html, posts/*.html <- GENERATED - do not edit by hand
+index.html, about.html, investment.html, posts/*.html <- GENERATED - do not edit by hand
 ```
 
 ## Build the site
