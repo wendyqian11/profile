@@ -175,6 +175,18 @@ public class SiteGenerator {
         sb.append("<section class=\"blog\">\n<h2>Blog</h2>\n");
         sb.append("<input id=\"post-search\" class=\"search\" type=\"search\" ")
           .append("placeholder=\"Search posts…\" aria-label=\"Search posts\">\n");
+
+        // "New Post" composer: a trigger that opens a modal for quick posting.
+        sb.append("<button type=\"button\" id=\"new-post-trigger\" class=\"new-post-trigger\">")
+          .append("New Post: what's on your mind?</button>\n");
+        sb.append("<div id=\"new-post-modal\" class=\"modal\" hidden>\n")
+          .append("<div class=\"modal-content\">\n")
+          .append("<textarea id=\"new-post-input\" class=\"new-post-input\" ")
+          .append("placeholder=\"What's on your mind?\" aria-label=\"New post text\"></textarea>\n")
+          .append("<button type=\"button\" id=\"new-post-submit\" class=\"new-post-submit\">")
+          .append("Submit</button>\n")
+          .append("</div>\n</div>\n");
+
         sb.append("<ul class=\"post-list\">\n");
         for (Post p : posts) {
             String data = esc((p.title + " " + p.excerpt).toLowerCase(Locale.ENGLISH));

@@ -36,6 +36,13 @@
 <section class="blog">
 <h2>Blog</h2>
 <input id="post-search" class="search" type="search" placeholder="Search posts…" aria-label="Search posts">
+<button type="button" id="new-post-trigger" class="new-post-trigger">New Post: what's on your mind?</button>
+<div id="new-post-modal" class="modal" hidden>
+<div class="modal-content">
+<textarea id="new-post-input" class="new-post-input" placeholder="What's on your mind?" aria-label="New post text"></textarea>
+<button type="button" id="new-post-submit" class="new-post-submit">Submit</button>
+</div>
+</div>
 <ul class="post-list">
 <li class="post-item" data-search="an example second post here's a second example post so you can see how multiple posts appear on your home page — newest first."><a class="post-link" href="posts/example-second-post.html">An example second post</a><time class="post-date">Jul 13, 2026</time><p class="post-excerpt">Here's a second example post so you can see how multiple posts appear on your home page — newest first.</p></li>
 <li class="post-item" data-search="welcome to my blog! this is my very first post 🎉"><a class="post-link" href="posts/welcome-to-my-blog.html">Welcome to my blog!</a><time class="post-date">Jul 13, 2026</time><p class="post-excerpt">This is my very first post 🎉</p></li>

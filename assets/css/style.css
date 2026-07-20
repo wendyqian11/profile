@@ -135,6 +135,62 @@ blockquote {
 .post .post-date { margin-bottom: 1.5rem; }
 .back { margin-top: 2.5rem; }
 
+/* ---- New post composer ---- */
+.new-post-trigger {
+  display: block;
+  width: 100%;
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+}
+.new-post-trigger:hover { color: inherit; border-style: solid; }
+
+.modal[hidden] { display: none; }
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 50;
+}
+.modal-content {
+  width: min(90%, 32rem);
+  padding: 1.25rem;
+  border-radius: 10px;
+  background: var(--bg, #fff);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.new-post-input {
+  min-height: 6rem;
+  padding: 0.5rem;
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  resize: vertical;
+}
+.new-post-submit {
+  align-self: flex-end;
+  padding: 0.5rem 1rem;
+  font: inherit;
+  cursor: pointer;
+}
+.post-delete {
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
 /* ---- Footer ---- */
 .site-footer {
   max-width: var(--max-width);

@@ -48,4 +48,87 @@
       if (empty) empty.hidden = visible !== 0;
     });
   }
+
+  /* ---- 3. New post: publish & delete ---- */
+
+  // Current date & time in Pacific time, e.g. "Jul 13, 2026, 2:30 PM PDT".
+  function pdtStamp() {
+    try {
+      return new Date().toLocaleString("en-US", {
+        timeZone: "America/Los_Angeles",
+        month: "short", day: "numeric", year: "numeric",
+        hour: "numeric", minute: "2-digit",
+        timeZoneName: "short"
+      });
+    } catch (e) {
+      return new Date().toString();
+    }
+  }
+
+  // Build a post list-item for the entered text. The single input is used as
+  // both the title and the body, and the item carries its own delete button.
+  function makePost(text) {
+    var li = document.createElement("li");
+    li.className = "post-item";
+    li.setAttribute("data-search", (text + " " + text).toLowerCase());
+
+    var link = document.createElement("a");
+    link.className = "post-link";
+    link.setAttribute("href", "#");
+    link.textContent = text;
+
+    var time = document.createElement("time");
+    time.className = "post-date";
+    time.textContent = pdtStamp();
+
+    var body = document.createElement("p");
+    body.className = "post-excerpt";
+    body.textContent = text;
+
+    var del = document.createElement("button");
+    del.type = "button";
+    del.className = "post-delete";
+    del.textContent = "Delete";
+
+    li.appendChild(link);
+    li.appendChild(time);
+    li.appendChild(body);
+    li.appendChild(del);
+    return li;
+  }
+
+  function openModal() {
+    var modal = document.getElementById("new-post-modal");
+    if (modal) modal.hidden = false;
+    var input = document.getElementById("new-post-input");
+    if (input) input.focus();
+  }
+
+  function closeModal() {
+    var modal = document.getElementById("new-post-modal");
+    if (modal) modal.hidden = true;
+  }
+
+  function publish() {
+    var input = document.getElementById("new-post-input");
+    var list = document.querySelector(".post-list");
+    if (!input || !list) return;
+    var text = input.value.trim();
+    if (!text) return; // ignore empty submissions
+    list.insertBefore(makePost(text), list.firstChild);
+    input.value = "";
+    closeModal();
+  }
+
+  // Event delegation so this works regardless of when the markup is added.
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.id === "new-post-trigger") { openModal(); return; }
+    if (t.id === "new-post-submit") { publish(); return; }
+    if (t.classList && t.classList.contains("post-delete")) {
+      var item = t.closest(".post-item");
+      if (item && item.parentNode) item.parentNode.removeChild(item);
+    }
+  });
 })();
