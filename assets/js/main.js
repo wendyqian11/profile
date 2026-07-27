@@ -2,7 +2,7 @@
    Browser-side interactivity:
      1. Dark / light theme toggle (remembers your choice in localStorage)
      2. Live search box that filters the blog list as you type
-     3. New Post composer, per-post delete, and per-post pin-to-top
+     3. New Post composer; per-post edit, pin-to-top, and delete
    --------------------------------------------------------------------------- */
 (function () {
   "use strict";
@@ -17,7 +17,6 @@
     if (btn) btn.textContent = theme === "dark" ? "☀️" : "🌙";
   }
 
-  // Use a saved preference, otherwise follow the OS setting.
   var saved = null;
   try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) { /* ignore */ }
   var prefersDark = window.matchMedia &&
@@ -50,34 +49,25 @@
     });
   }
 
-  /* ---- 3. New post: publish, delete & pin ---- */
+  /* ---- 3. New post: publish, edit, pin & delete ---- */
 
   var list = document.querySelector(".post-list");
 
-  // Current date & time in Pacific time, e.g. "Jul 13, 2026, 2:30 PM PDT".
   function pdtStamp() {
     try {
       return new Date().toLocaleString("en-US", {
         timeZone: "America/Los_Angeles",
         month: "short", day: "numeric", year: "numeric",
-        hour: "numeric", minute: "2-digit",
-        timeZoneName: "short"
+        hour: "numeric", minute: "2-digit", timeZoneName: "short"
       });
-    } catch (e) {
-      return new Date().toString();
-    }
+    } catch (e) { return new Date().toString(); }
   }
 
-  // Ordering: the list is arranged so that pinned posts sit at the top (the
-  // most recently pinned highest), and everything else keeps its natural order
-  // (newer posts above older ones). Each item records its own state on the DOM:
-  //   data-pinned  "1" when pinned, "0" otherwise
-  //   data-pinseq  a monotonic counter — higher means pinned more recently
-  //   data-natrank the natural rank; lower sorts higher (composed posts get
-  //                descending negatives so the newest is first, generated posts
-  //                keep their document order after those)
-  var pinCounter = 0;   // session-wide pin recency
-  var userRank = 0;     // decremented per composed post so newer sorts first
+  // Ordering: pinned posts sit at the top (most recently pinned highest); all
+  // other posts keep their natural order (newer above older). State lives on
+  // each item: data-pinned/data-pinseq for pinning, data-natrank for order.
+  var pinCounter = 0;
+  var userRank = 0;
 
   function applyOrder() {
     if (!list) return;
@@ -85,13 +75,11 @@
     arr.sort(function (a, b) {
       var pa = a.getAttribute("data-pinned") === "1";
       var pb = b.getAttribute("data-pinned") === "1";
-      if (pa !== pb) return pa ? -1 : 1;                 // pinned before unpinned
-      if (pa && pb) {                                     // both pinned: recent first
-        return (+b.getAttribute("data-pinseq")) - (+a.getAttribute("data-pinseq"));
-      }
+      if (pa !== pb) return pa ? -1 : 1;
+      if (pa && pb) return (+b.getAttribute("data-pinseq")) - (+a.getAttribute("data-pinseq"));
       return (+a.getAttribute("data-natrank")) - (+b.getAttribute("data-natrank"));
     });
-    arr.forEach(function (li) { list.appendChild(li); }); // re-append in sorted order
+    arr.forEach(function (li) { list.appendChild(li); });
   }
 
   function updatePinButton(li) {
@@ -111,8 +99,42 @@
     applyOrder();
   }
 
+  // Set a post's text everywhere it appears: the title link, the excerpt, and
+  // the data-search haystack that the filter reads.
+  function setPostText(li, text) {
+    var link = li.querySelector(".post-link");
+    var body = li.querySelector(".post-excerpt");
+    if (link) link.textContent = text;
+    if (body) body.textContent = text;
+    li.setAttribute("data-search", (text + " " + text).toLowerCase());
+  }
+
+  function enterEdit(li) {
+    if (li.querySelector(".post-edit-input")) return; // already editing
+    var link = li.querySelector(".post-link");
+    var input = document.createElement("input");
+    input.type = "text";
+    input.className = "post-edit-input";
+    input.value = link ? link.textContent : "";
+    li.insertBefore(input, li.firstChild);
+    var btn = li.querySelector(".post-edit");
+    if (btn) btn.textContent = "Save";
+    if (input.focus) input.focus();
+  }
+
+  function saveEdit(li) {
+    var input = li.querySelector(".post-edit-input");
+    if (!input) return;
+    var text = input.value.trim();
+    if (text) setPostText(li, text);
+    li.removeChild(input);
+    var btn = li.querySelector(".post-edit");
+    if (btn) btn.textContent = "Edit";
+  }
+
   // Build a post list-item for the entered text. The single input is used as
-  // both the title and the body; the item carries its own pin and delete buttons.
+  // both the title and the body; the item carries its own edit, pin, and delete
+  // buttons.
   function makePost(text) {
     var li = document.createElement("li");
     li.className = "post-item";
@@ -133,6 +155,11 @@
     body.className = "post-excerpt";
     body.textContent = text;
 
+    var edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "post-edit";
+    edit.textContent = "Edit";
+
     var pin = document.createElement("button");
     pin.type = "button";
     pin.className = "post-pin";
@@ -146,6 +173,7 @@
     li.appendChild(link);
     li.appendChild(time);
     li.appendChild(body);
+    li.appendChild(edit);
     li.appendChild(pin);
     li.appendChild(del);
     return li;
@@ -180,6 +208,14 @@
     if (!t) return;
     if (t.id === "new-post-trigger") { openModal(); return; }
     if (t.id === "new-post-submit") { publish(); return; }
+    if (t.classList && t.classList.contains("post-edit")) {
+      var editItem = t.closest(".post-item");
+      if (editItem) {
+        if (editItem.querySelector(".post-edit-input")) saveEdit(editItem);
+        else enterEdit(editItem);
+      }
+      return;
+    }
     if (t.classList && t.classList.contains("post-pin")) {
       var pinItem = t.closest(".post-item");
       if (pinItem) togglePin(pinItem);
