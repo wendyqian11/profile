@@ -197,6 +197,8 @@ public class SiteGenerator {
             if (!p.excerpt.isEmpty()) {
                 sb.append("<p class=\"post-excerpt\">").append(esc(p.excerpt)).append("</p>");
             }
+            // Every post carries its own delete control, matching the in-page composer.
+            sb.append("<button type=\"button\" class=\"post-delete\">Delete</button>");
             sb.append("</li>\n");
         }
         sb.append("</ul>\n<p class=\"no-results\" hidden>No posts match your search.</p>\n</section>\n");
