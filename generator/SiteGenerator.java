@@ -197,7 +197,9 @@ public class SiteGenerator {
             if (!p.excerpt.isEmpty()) {
                 sb.append("<p class=\"post-excerpt\">").append(esc(p.excerpt)).append("</p>");
             }
-            // Every post carries its own delete control, matching the in-page composer.
+            // Every post carries its own pin and delete controls, matching the
+            // in-page composer.
+            sb.append("<button type=\"button\" class=\"post-pin\">Pin</button>");
             sb.append("<button type=\"button\" class=\"post-delete\">Delete</button>");
             sb.append("</li>\n");
         }

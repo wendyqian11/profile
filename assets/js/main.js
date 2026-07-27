@@ -2,6 +2,7 @@
    Browser-side interactivity:
      1. Dark / light theme toggle (remembers your choice in localStorage)
      2. Live search box that filters the blog list as you type
+     3. New Post composer, per-post delete, and per-post pin-to-top
    --------------------------------------------------------------------------- */
 (function () {
   "use strict";
@@ -49,7 +50,9 @@
     });
   }
 
-  /* ---- 3. New post: publish & delete ---- */
+  /* ---- 3. New post: publish, delete & pin ---- */
+
+  var list = document.querySelector(".post-list");
 
   // Current date & time in Pacific time, e.g. "Jul 13, 2026, 2:30 PM PDT".
   function pdtStamp() {
@@ -65,12 +68,57 @@
     }
   }
 
+  // Ordering: the list is arranged so that pinned posts sit at the top (the
+  // most recently pinned highest), and everything else keeps its natural order
+  // (newer posts above older ones). Each item records its own state on the DOM:
+  //   data-pinned  "1" when pinned, "0" otherwise
+  //   data-pinseq  a monotonic counter — higher means pinned more recently
+  //   data-natrank the natural rank; lower sorts higher (composed posts get
+  //                descending negatives so the newest is first, generated posts
+  //                keep their document order after those)
+  var pinCounter = 0;   // session-wide pin recency
+  var userRank = 0;     // decremented per composed post so newer sorts first
+
+  function applyOrder() {
+    if (!list) return;
+    var arr = Array.prototype.slice.call(list.querySelectorAll(".post-item"));
+    arr.sort(function (a, b) {
+      var pa = a.getAttribute("data-pinned") === "1";
+      var pb = b.getAttribute("data-pinned") === "1";
+      if (pa !== pb) return pa ? -1 : 1;                 // pinned before unpinned
+      if (pa && pb) {                                     // both pinned: recent first
+        return (+b.getAttribute("data-pinseq")) - (+a.getAttribute("data-pinseq"));
+      }
+      return (+a.getAttribute("data-natrank")) - (+b.getAttribute("data-natrank"));
+    });
+    arr.forEach(function (li) { list.appendChild(li); }); // re-append in sorted order
+  }
+
+  function updatePinButton(li) {
+    var btn = li.querySelector(".post-pin");
+    if (btn) btn.textContent = li.getAttribute("data-pinned") === "1" ? "Unpin" : "Pin";
+  }
+
+  function togglePin(li) {
+    if (li.getAttribute("data-pinned") === "1") {
+      li.setAttribute("data-pinned", "0");
+      li.removeAttribute("data-pinseq");
+    } else {
+      li.setAttribute("data-pinned", "1");
+      li.setAttribute("data-pinseq", String(++pinCounter));
+    }
+    updatePinButton(li);
+    applyOrder();
+  }
+
   // Build a post list-item for the entered text. The single input is used as
-  // both the title and the body, and the item carries its own delete button.
+  // both the title and the body; the item carries its own pin and delete buttons.
   function makePost(text) {
     var li = document.createElement("li");
     li.className = "post-item";
     li.setAttribute("data-search", (text + " " + text).toLowerCase());
+    li.setAttribute("data-pinned", "0");
+    li.setAttribute("data-natrank", String(--userRank));
 
     var link = document.createElement("a");
     link.className = "post-link";
@@ -85,6 +133,11 @@
     body.className = "post-excerpt";
     body.textContent = text;
 
+    var pin = document.createElement("button");
+    pin.type = "button";
+    pin.className = "post-pin";
+    pin.textContent = "Pin";
+
     var del = document.createElement("button");
     del.type = "button";
     del.className = "post-delete";
@@ -93,6 +146,7 @@
     li.appendChild(link);
     li.appendChild(time);
     li.appendChild(body);
+    li.appendChild(pin);
     li.appendChild(del);
     return li;
   }
@@ -111,11 +165,11 @@
 
   function publish() {
     var input = document.getElementById("new-post-input");
-    var list = document.querySelector(".post-list");
     if (!input || !list) return;
     var text = input.value.trim();
     if (!text) return; // ignore empty submissions
     list.insertBefore(makePost(text), list.firstChild);
+    applyOrder();
     input.value = "";
     closeModal();
   }
@@ -126,9 +180,24 @@
     if (!t) return;
     if (t.id === "new-post-trigger") { openModal(); return; }
     if (t.id === "new-post-submit") { publish(); return; }
+    if (t.classList && t.classList.contains("post-pin")) {
+      var pinItem = t.closest(".post-item");
+      if (pinItem) togglePin(pinItem);
+      return;
+    }
     if (t.classList && t.classList.contains("post-delete")) {
       var item = t.closest(".post-item");
       if (item && item.parentNode) item.parentNode.removeChild(item);
     }
   });
+
+  // Give the generated posts their natural rank (document order) and a default
+  // unpinned state, then arrange the list.
+  if (list) {
+    Array.prototype.forEach.call(list.querySelectorAll(".post-item"), function (li, i) {
+      li.setAttribute("data-natrank", String(i));
+      if (li.getAttribute("data-pinned") === null) li.setAttribute("data-pinned", "0");
+    });
+    applyOrder();
+  }
 })();
